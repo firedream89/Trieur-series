@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>916</width>
+    <width>937</width>
     <height>567</height>
    </rect>
   </property>
@@ -14,8 +14,8 @@
    <string>TSeries</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0" colspan="2">
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="1">
        <widget class="QLineEdit" name="eParcourir">
@@ -53,6 +53,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLineEdit" name="ePourcentage">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="maximumSize">
            <size>
             <width>40</width>
@@ -66,11 +69,14 @@
         </item>
         <item>
          <widget class="QCheckBox" name="cAuto">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>Modification emplacement automatique</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -162,6 +168,9 @@
       </item>
       <item row="0" column="4">
        <widget class="QPushButton" name="bAide">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="maximumSize">
          <size>
           <width>25</width>
@@ -176,42 +185,74 @@
      </layout>
     </item>
     <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QTreeWidget" name="treeAvant">
-        <property name="maximumSize">
-         <size>
-          <width>300</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <column>
-         <property name="text">
-          <string>Avant</string>
-         </property>
-        </column>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTableWidget" name="tModif">
-        <column>
-         <property name="text">
-          <string>Nouvel emplacement</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Fichier</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Emplacement actuel</string>
-         </property>
-        </column>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="maximumSize">
+       <size>
+        <width>250</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Avant</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QTreeWidget" name="treeAvant">
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <column>
+           <property name="text">
+            <string/>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Après</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QTreeWidget" name="treeApres">
+          <column>
+           <property name="text">
+            <string/>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QTableWidget" name="tModif">
+      <column>
+       <property name="text">
+        <string>Nouvel emplacement</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Fichier</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Emplacement actuel</string>
+       </property>
+      </column>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -220,8 +261,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>916</width>
-     <height>21</height>
+     <width>937</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">

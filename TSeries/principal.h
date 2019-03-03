@@ -31,6 +31,7 @@ private slots:
     void Application2();
     QTreeWidgetItem *listing(QString lien, QTreeWidgetItem *nItem = 0);
     void Aide();
+    void AutoOrganise();
 
 private:
     Ui::principal *ui;
