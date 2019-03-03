@@ -45,3 +45,9 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+*.pro.user
+Build
+build-TSeries-Desktop_Qt_5_0_2_MinGW_32bit-Debug
+build-TSeries-Desktop_Qt_5_0_2_MinGW_32bit-Release
+TSeries/TSeries.pro.user.95cd6ef
