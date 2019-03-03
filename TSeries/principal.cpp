@@ -1,8 +1,6 @@
 #include "principal.h"
 #include "ui_principal.h"
 
-//Version 1.1
-
 principal::principal(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::principal)
@@ -144,100 +142,6 @@ void principal::Traitement(QString lien)
     ui->barChargement->hide();
     ui->tModif->resizeColumnsToContents();
     ui->tModif->blockSignals(false);
-    qApp->processEvents();
-    AutoOrganise();
-}
-
-void principal::AutoOrganise()
-{
-    ui->barChargement->setMaximum(ui->tModif->rowCount());
-    ui->barChargement->setValue(0);
-    ui->barChargement->show();
-
-    for(int i = 0;i<ui->tModif->rowCount();i++)
-    {
-        QString file = ui->tModif->item(i,1)->text();
-        QString link = ui->tModif->item(i,2)->text();
-
-        QString name, season;
-        bool sec(false);
-        for(int i2 = 0;i2<file.count();i2++)//Extraction du nom et de la saison
-        {
-            if(!sec && (file.at(i2) == 'S' || file.at(i2) == 's') && file.at(i2+1).isDigit())
-                sec = true;
-            else if(!sec)
-                name += file.at(i2);
-            else if(sec && file.at(i2).isDigit())
-                season += file.at(i2);
-            else
-                i2 = file.count();
-        }
-
-        //Mise à jour du nom
-        name.replace("."," ");
-        if(name.at(name.count()-1) == ' ')
-            name.remove(name.count()-1,name.count()-1);
-        QString tmp;
-        for(int i2=0;i2<name.count();i2++)
-        {
-            if(i2 == 0 || name.at(i2-1) == ' ')
-                tmp += name.at(i2).toUpper();
-            else
-                tmp += name.at(i2).toLower();
-        }
-        name = tmp;
-
-        //Suppression saison si seulement un chiffre
-        if(season.count() != 2)
-            season.clear();
-
-        if(!season.isEmpty())
-        {
-            ui->tModif->item(i,0)->setText(name + "/Saison " + QString::number(season.toInt()));
-
-            if(ui->treeApres->findItems(name,Qt::MatchExactly).count() == 0)//Si le dossier n'existe pas
-            {
-                qDebug() << "Création item serie : " + name;
-                QTreeWidgetItem *item = new QTreeWidgetItem;
-                item->setText(0,name);
-                ui->treeApres->insertTopLevelItem(0,item);
-            }
-            //2ème niveau(saison)
-            QList<QTreeWidgetItem*> list = ui->treeApres->findItems(name,Qt::MatchExactly);
-            if(list.count() != 1)
-                QMessageBox::warning(this,"","Echec de création de l'arbre Après");
-            else
-            {
-                qDebug() << "Recherche Saison : Saison " + season;
-                QTreeWidgetItem *item = list.at(0);
-                QTreeWidgetItem *ss = new QTreeWidgetItem;
-                for(int i=0;i<item->childCount();i++)
-                    if(item->child(i)->text(0) == "Saison " + QString::number(season.toInt()))
-                        ss = item->child(i);
-
-                if(ss->text(0).isEmpty())
-                {
-                    qDebug() << "Création item Saison " + season;
-                    ss = new QTreeWidgetItem;
-                    ss->setText(0,"Saison " + QString::number(season.toInt()));
-                    item->addChild(ss);
-                }
-                //3ème niveau(fichier)
-                qDebug() << "Création item fichier : " + file;
-                QTreeWidgetItem *item2 = new QTreeWidgetItem;
-                item2->setText(0,file);
-                ss->addChild(item2);
-            }
-        }
-        else
-        {
-            qDebug() << "Suppression ligne : " << ui->tModif->item(i,1)->text();
-            ui->tModif->removeRow(i);
-            i--;
-        }
-        ui->barChargement->setValue(i);
-    }
-    ui->barChargement->hide();
 }
 
 //////////////////////////////////////////////////
@@ -437,33 +341,15 @@ void principal::Application2()
     {
         ui->barChargement->setValue(ui->barChargement->value()+1);
         nLien.append(ui->tModif->item(cpt,0)->text());
-
-        for(int i=0;i<ui->tModif->item(cpt,0)->text().split("/").count();i++)
-        {
-            dossier.setPath(ui->eParcourir->text() + "/" + ui->tModif->item(cpt,0)->text().split("/").at(i));
-            if(!dossier.exists())
-            {
-                if(!dossier.mkpath(ui->eParcourir->text() + "/" + ui->tModif->item(cpt,0)->text().split("/").at(i)))
-                {
-                    erreur.append("Echec de création du dossier " + ui->tModif->item(cpt,0)->text().split("/").at(i));
-                    qDebug() << erreur.last();
-                }
-                else
-                    qDebug() << "Création du dossier " + ui->tModif->item(cpt,0)->text().split("/").at(i);
-            }
-        }
+        dossier.setPath(ui->eParcourir->text() + "/" + ui->tModif->item(cpt,0)->text());
+        if(!dossier.exists())
+            if(!dossier.mkpath(ui->eParcourir->text() + "/" + ui->tModif->item(cpt,0)->text()))
+                erreur.append("Echec du création du dossier " + ui->tModif->item(cpt,0)->text() + "\n");
 
     }
 
-    qDebug() << "Création du dossier temp";
     if(!dossier.mkpath(ui->eParcourir->text() + "/temp"))//Création du dossier temporaire
-    {
-        QMessageBox::warning(this,"Erreur","Echec de création du dossier temporaire, arret de la procédure");
-        qDebug() << "Echec de création du dossier temp";
-        ui->eParcourir->setEnabled(true);
-        ui->barChargement->hide();
-        return;
-    }
+        QMessageBox::warning(this,"Erreur","Echec de création du dossier temporaire, arret de la procédure\n");
 
     for(int cpt = 0;cpt < ui->tModif->rowCount();cpt++)//Déplacement des fichiers en dossier temporaire
     {
@@ -472,17 +358,13 @@ void principal::Application2()
         QString nFichier = ui->eParcourir->text() + "/temp/" + ui->tModif->item(cpt,1)->text();
 
         if(rename(aFichier.toStdString().c_str(),nFichier.toStdString().c_str()) == -1)
-        {
-            erreur.append("Déplacement du fichier " + ui->tModif->item(cpt,1)->text() + " échoué !");
-            qDebug() << erreur.last();
-        }
+            erreur.append("Déplacement du fichier " + ui->tModif->item(cpt,1)->text() + " échoué !\n");
         else//Suppression des dossiers vide
         {
-            qDebug() << "Déplacement du fichier " + ui->tModif->item(cpt,1)->text() + " réussis";
             dossier.setPath(ui->tModif->item(cpt,2)->text());
             QStringList l = dossier.entryList();
             bool test = true;
-            for(int cpt = 0;cpt<l.count();cpt++)//test dossier vide
+            for(int cpt = 0;cpt<l.count();cpt++)
             {
                 if(l.at(cpt).contains("mkv") || l.at(cpt).contains("avi") || l.at(cpt).contains("mp4"))
                     test = false;
@@ -493,12 +375,7 @@ void principal::Application2()
                         && ui->tModif->item(cpt,2)->text() != ui->eParcourir->text() + "/" + ui->tModif->item(cpt,0)->text())
                 {
                     if(!dossier.removeRecursively())
-                    {
-                        erreur.append("Suppression du dossier " + ui->tModif->item(cpt,0)->text() + "échoué");
-                        qDebug() << erreur.last();
-                    }
-                    else
-                        qDebug() << "Suppression du dossier " + ui->tModif->item(cpt,0)->text() + " réussis";
+                        erreur.append("Suppression du dossier " + ui->tModif->item(cpt,0)->text() + "échoué\n");
                 }
             }
         }
@@ -511,23 +388,17 @@ void principal::Application2()
         QString nFichier = ui->eParcourir->text() + "/" + ui->tModif->item(cpt,0)->text() + "/" + ui->tModif->item(cpt,1)->text();
 
         if(rename(aFichier.toStdString().c_str(),nFichier.toStdString().c_str()) == -1)
-        {
-            erreur.append("Déplacement du fichier " + ui->tModif->item(cpt,1)->text() + " échoué !");
-            qDebug() << erreur.last();
-        }
-        else
-            qDebug() << "Déplacement du fichier " + ui->tModif->item(cpt,1)->text() + " réussis";
+            erreur.append("Déplacement du fichier " + ui->tModif->item(cpt,1)->text() + " échoué !\n");
     }
 
     dossier.rmdir(ui->eParcourir->text() + "/temp");
-    qDebug() << "Suppression du dossier temp";
 
     if(erreur.count() > 0)
     {
         QString tErreur;
         for(int e = 0;e < erreur.count();e++)
             tErreur.append(erreur.at(e));
-        QMessageBox::warning(this,"Erreur",QString::number(erreur.count()) + " erreur(s) ont été trouvé \n");
+        QMessageBox::warning(this,"Erreur",QString::number(erreur.count()) + " erreur(s) ont été trouvé \n" + tErreur);
     }
     ui->eParcourir->setEnabled(true);
     ui->barChargement->hide();
@@ -538,12 +409,7 @@ void principal::Application2()
 //////////////////////////////////////////////////
 void principal::Aide()
 {
-    QMessageBox::information(this,"Aide","1-Cliquer sur Parcourir et sélectionnez un dossier\n2-Entrer un nouvel emplacement"
-                                         "(ex : dossier1/dossier2 cela donnera c:/lien/vers/parcourir/dossier1/dossier2)\n"
-                                         "3-Cliquer sur valider pour appliquer les changements\n"
-                                         "NB : Les fichiers ayant les même nom auront également le même emplacement,"
-                                         " vous pouvez le désactiver en décochant modification d'emplacement automatique et "
-                                         "également reglé le taux de pourcentage de correspondance. Entrez un . dans nouvel emplacement pour supprimer la ligne");
+    QMessageBox::information(this,"Aide","1-Cliquer sur Parcourir et sélectionnez un dossier\n2-Entrer un nouvel emplacement (ex : dossier1/dossier2 cela donnera c:/lien/vers/parcourir/dossier1/dossier2)\n3-Cliquer sur valider pour appliquer les changements\n NB : Les fichiers ayant les même nom auront également le même emplacement, vous pouvez le désactiver en décochant modification d'emplacement automatique et également reglé le taux de pourcentage de correspondance. Entrez un . dans nouvel emplacement pour supprimer la ligne");
 }
 
 
