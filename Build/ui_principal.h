@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'principal.ui'
 **
-** Created by: Qt User Interface Compiler version 5.0.2
+** Created by: Qt User Interface Compiler version 5.7.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -13,9 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGridLayout>
-#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -43,16 +41,11 @@ public:
     QGridLayout *gridLayout;
     QLineEdit *eParcourir;
     QPushButton *bParcourir;
-    QHBoxLayout *horizontalLayout_2;
-    QLineEdit *ePourcentage;
-    QCheckBox *cAuto;
-    QSpacerItem *horizontalSpacer_2;
     QLineEdit *eFormat;
     QPushButton *bValider;
     QProgressBar *barChargement;
     QLabel *label;
     QSpacerItem *horizontalSpacer;
-    QPushButton *bAide;
     QTabWidget *tabWidget;
     QWidget *tab;
     QGridLayout *gridLayout_2;
@@ -95,30 +88,6 @@ public:
 
         gridLayout->addWidget(bParcourir, 0, 0, 1, 1);
 
-        horizontalLayout_2 = new QHBoxLayout();
-        horizontalLayout_2->setSpacing(6);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        ePourcentage = new QLineEdit(centralWidget);
-        ePourcentage->setObjectName(QStringLiteral("ePourcentage"));
-        ePourcentage->setEnabled(false);
-        ePourcentage->setMaximumSize(QSize(40, 16777215));
-
-        horizontalLayout_2->addWidget(ePourcentage);
-
-        cAuto = new QCheckBox(centralWidget);
-        cAuto->setObjectName(QStringLiteral("cAuto"));
-        cAuto->setEnabled(false);
-        cAuto->setChecked(false);
-
-        horizontalLayout_2->addWidget(cAuto);
-
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_2->addItem(horizontalSpacer_2);
-
-
-        gridLayout->addLayout(horizontalLayout_2, 0, 2, 1, 2);
-
         eFormat = new QLineEdit(centralWidget);
         eFormat->setObjectName(QStringLiteral("eFormat"));
         eFormat->setMinimumSize(QSize(400, 0));
@@ -148,13 +117,6 @@ public:
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         gridLayout->addItem(horizontalSpacer, 1, 4, 1, 1);
-
-        bAide = new QPushButton(centralWidget);
-        bAide->setObjectName(QStringLiteral("bAide"));
-        bAide->setEnabled(false);
-        bAide->setMaximumSize(QSize(25, 16777215));
-
-        gridLayout->addWidget(bAide, 0, 4, 1, 1);
 
 
         gridLayout_3->addLayout(gridLayout, 0, 0, 1, 2);
@@ -233,25 +195,22 @@ public:
 
     void retranslateUi(QMainWindow *principal)
     {
-        principal->setWindowTitle(QApplication::translate("principal", "TSeries", 0));
-        actionQuitter->setText(QApplication::translate("principal", "Quitter", 0));
-        eParcourir->setText(QApplication::translate("principal", "Emplacement/de/serie", 0));
-        bParcourir->setText(QApplication::translate("principal", "Parcourir", 0));
-        ePourcentage->setText(QApplication::translate("principal", "80", 0));
-        cAuto->setText(QApplication::translate("principal", "Modification emplacement automatique", 0));
-        eFormat->setText(QApplication::translate("principal", "mkv,avi,mp4", 0));
-        bValider->setText(QApplication::translate("principal", "Appliquer", 0));
-        label->setText(QApplication::translate("principal", "format vid\303\251o", 0));
-        bAide->setText(QApplication::translate("principal", "?", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("principal", "Avant", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("principal", "Apr\303\250s", 0));
+        principal->setWindowTitle(QApplication::translate("principal", "TSeries", Q_NULLPTR));
+        actionQuitter->setText(QApplication::translate("principal", "Quitter", Q_NULLPTR));
+        eParcourir->setText(QApplication::translate("principal", "Emplacement/de/serie", Q_NULLPTR));
+        bParcourir->setText(QApplication::translate("principal", "Parcourir", Q_NULLPTR));
+        eFormat->setText(QApplication::translate("principal", "mkv,avi,mp4", Q_NULLPTR));
+        bValider->setText(QApplication::translate("principal", "Appliquer", Q_NULLPTR));
+        label->setText(QApplication::translate("principal", "format vid\303\251o", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("principal", "Avant", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("principal", "Apr\303\250s", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem = tModif->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QApplication::translate("principal", "Nouvel emplacement", 0));
+        ___qtablewidgetitem->setText(QApplication::translate("principal", "Nouvel emplacement", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem1 = tModif->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QApplication::translate("principal", "Fichier", 0));
+        ___qtablewidgetitem1->setText(QApplication::translate("principal", "Fichier", Q_NULLPTR));
         QTableWidgetItem *___qtablewidgetitem2 = tModif->horizontalHeaderItem(2);
-        ___qtablewidgetitem2->setText(QApplication::translate("principal", "Emplacement actuel", 0));
-        menuMenu->setTitle(QApplication::translate("principal", "Menu", 0));
+        ___qtablewidgetitem2->setText(QApplication::translate("principal", "Emplacement actuel", Q_NULLPTR));
+        menuMenu->setTitle(QApplication::translate("principal", "Menu", Q_NULLPTR));
     } // retranslateUi
 
 };

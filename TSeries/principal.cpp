@@ -1,7 +1,7 @@
 #include "principal.h"
 #include "ui_principal.h"
 
-//Version 1.1
+//Version 1.11
 
 principal::principal(QWidget *parent) :
     QMainWindow(parent),
@@ -14,7 +14,6 @@ principal::principal(QWidget *parent) :
     connect(ui->eParcourir, SIGNAL(editingFinished()), this, SLOT(Edition()));
     connect(ui->tModif, SIGNAL(cellChanged(int,int)), this, SLOT(Modification(int,int)));
     connect(ui->bValider, SIGNAL(clicked()), this, SLOT(Application2()));
-    connect(ui->bAide, SIGNAL(clicked()), this, SLOT(Aide()));
     connect(ui->tModif, SIGNAL(cellDoubleClicked(int,int)), this, SLOT(Suppression(int,int)));
 }
 
@@ -337,33 +336,30 @@ QTreeWidgetItem *principal::listing(QString lien, QTreeWidgetItem *nItem)
 void principal::Modification(int ligne, int colonne)
 {
     ///Modification automatique des "nouvelle emplacement"
-    if(ui->cAuto->isChecked())
-    {
-        QString modif = ui->tModif->item(ligne,1)->text();
-        ui->tModif->blockSignals(true);
-        ui->barChargement->show();
-        ui->barChargement->setMinimum(0);
-        ui->barChargement->setMaximum(ui->tModif->rowCount());
+    QString modif = ui->tModif->item(ligne,1)->text();
+    ui->tModif->blockSignals(true);
+    ui->barChargement->show();
+    ui->barChargement->setMinimum(0);
+    ui->barChargement->setMaximum(ui->tModif->rowCount());
 
-        for(int cpt = 0;cpt < ui->tModif->rowCount();cpt++)
+    for(int cpt = 0;cpt < ui->tModif->rowCount();cpt++)
+    {
+        ui->barChargement->setValue(cpt);
+        int total = 0;
+        QString fichier = ui->tModif->item(cpt,1)->text();
+        for(int cpt2 = 0;cpt2 < fichier.count();cpt2++)
         {
-            ui->barChargement->setValue(cpt);
-            int total = 0;
-            QString fichier = ui->tModif->item(cpt,1)->text();
-            for(int cpt2 = 0;cpt2 < fichier.count();cpt2++)
-            {
-                if(modif.count() > cpt2)
-                    if(fichier.at(cpt2) == modif.at(cpt2))
-                        total++;
-            }
-            if(total*100/fichier.count() > ui->ePourcentage->text().toInt())
-            {
-                ui->tModif->item(cpt,0)->setText(ui->tModif->item(ligne,0)->text());
-            }
+            if(modif.count() > cpt2)
+                if(fichier.at(cpt2) == modif.at(cpt2))
+                    total++;
         }
-        ui->tModif->blockSignals(false);
-        ui->barChargement->hide();
+        if(total*100/fichier.count() > 80)
+        {
+            ui->tModif->item(cpt,0)->setText(ui->tModif->item(ligne,0)->text());
+        }
     }
+    ui->tModif->blockSignals(false);
+    ui->barChargement->hide();
 }
 
 //////////////////////////////////////////////////
@@ -532,71 +528,3 @@ void principal::Application2()
     ui->eParcourir->setEnabled(true);
     ui->barChargement->hide();
 }
-
-//////////////////////////////////////////////////
-/// \brief principal::Aide
-//////////////////////////////////////////////////
-void principal::Aide()
-{
-    QMessageBox::information(this,"Aide","1-Cliquer sur Parcourir et sélectionnez un dossier\n2-Entrer un nouvel emplacement"
-                                         "(ex : dossier1/dossier2 cela donnera c:/lien/vers/parcourir/dossier1/dossier2)\n"
-                                         "3-Cliquer sur valider pour appliquer les changements\n"
-                                         "NB : Les fichiers ayant les même nom auront également le même emplacement,"
-                                         " vous pouvez le désactiver en décochant modification d'emplacement automatique et "
-                                         "également reglé le taux de pourcentage de correspondance. Entrez un . dans nouvel emplacement pour supprimer la ligne");
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
